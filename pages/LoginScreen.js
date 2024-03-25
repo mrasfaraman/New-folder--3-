@@ -1,5 +1,5 @@
 import CheckBox from '@react-native-community/checkbox';
-import React, {useState, useContext , useEffect} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   Image,
   ScrollView,
@@ -17,7 +17,7 @@ import SubmitBtn from '../components/SubmitBtn';
 import Header from '../components/header';
 import {ThemeContext} from '../context/ThemeContext';
 import {useAuth} from '../context/AuthContext';
-import { authenticateFingerprint } from '../utils/BiometricUtils';
+import {authenticateFingerprint} from '../utils/BiometricUtils';
 export default function LoginScreen({navigation}) {
   const [showPassword, setShowPassword] = useState(true);
   const [passwordInput, setPasswordInput] = useState('');
@@ -25,35 +25,41 @@ export default function LoginScreen({navigation}) {
 
   const {theme} = useContext(ThemeContext);
   const {password, savePassword} = useAuth();
-
+  console.log('password', {
+    password,
+    passwordInput,
+    coond: password !== passwordInput,
+  });
   function handleSubmit() {
-    if (password !== passwordInput) {
+    if (passwordInput == '') {
+      return setError('Please enter password!');
+    } else if (password !== passwordInput) {
       return setError('Password does not match!');
     }
     return navigation.navigate('MainPage');
   }
 
   async function handleSubmitfingerprint() {
-    let fingerprint = await authenticateFingerprint()
-    console.log(fingerprint)
+    let fingerprint = await authenticateFingerprint();
+    console.log(fingerprint);
     if (fingerprint) {
-      navigation.navigate('MainPage')
+      // navigation.navigate('MainPage');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'MainPage'}],
+      });
     }
-
   }
 
-
- 
-  useEffect(()=>{
-   
+  useEffect(() => {
     // if(fingerprint){
     //   navigation.navigate('MainPage');
     // }
-    if(password == null || password == undefined || password == ''){
-      return navigation.navigate('Home');      
+    if (password == null || password == undefined || password == '') {
+      return navigation.navigate('Home');
     }
-    handleSubmitfingerprint()
-  },[password])
+    handleSubmitfingerprint();
+  }, [password]);
 
   return (
     <ScrollView style={{backgroundColor: theme.screenBackgroud}}>
@@ -64,7 +70,15 @@ export default function LoginScreen({navigation}) {
           Sign in to continue
         </Text>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput
@@ -83,7 +97,7 @@ export default function LoginScreen({navigation}) {
       <View>
         {error && (
           <Text style={[{color: theme.emphasis, textAlign: 'center'}]}>
-            ! {error}
+            {error}
           </Text>
         )}
       </View>
@@ -92,7 +106,7 @@ export default function LoginScreen({navigation}) {
         // onPress={() => navigation.navigate('ResetPasswordScreen')}
         onPress={() => handleSubmit()}
       />
-          {/* <SubmitBtn
+      {/* <SubmitBtn
         title="Biomatric"
         // onPress={() => navigation.navigate('ResetPasswordScreen')}
         onPress={() => handleSubmitfingerprint()}

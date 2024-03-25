@@ -62,10 +62,19 @@ export default function ResetPasswordScreen({navigation}) {
         </Text>
         <Text
           style={[styles.textStyle, styles.instruction, {color: theme.text}]}>
-         Set Your New Password
+          Set Your New Password
         </Text>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput
@@ -82,7 +91,16 @@ export default function ResetPasswordScreen({navigation}) {
           <Image source={theme.type == 'dark' ? eye : eyeDark} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput
@@ -98,11 +116,20 @@ export default function ResetPasswordScreen({navigation}) {
           <Image source={theme.type == 'dark' ? eye : eyeDark} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG , justifyContent:'space-between'}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+            justifyContent: 'space-between',
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput
-            style={[styles.placeHolderText ,{width:'100%'}]}
+            style={[styles.placeHolderText, {width: '100%'}]}
             placeholder="Confirm password"
             placeholderTextColor={theme.placeholderTextColor}
             onChangeText={newText => setConfirmPasswordInput(newText)}
@@ -110,9 +137,13 @@ export default function ResetPasswordScreen({navigation}) {
             secureTextEntry={showConfirmPassword}
           />
         </View>
-        
+
         <TouchableOpacity
-        style={{alignItems:'right' , justifyContent:'flex-end', paddingLeft:40}} 
+          style={{
+            alignItems: 'right',
+            justifyContent: 'flex-end',
+            paddingLeft: 40,
+          }}
           onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
           <Image source={theme.type == 'dark' ? eye : eyeDark} />
         </TouchableOpacity>

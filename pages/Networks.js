@@ -14,7 +14,7 @@ import { RadioButton } from 'react-native-paper';
 import Header from '../components/header';
 import { ThemeContext } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+
 
 export default function Networks({ navigation }) {
     const [currency, setCurrency] = useState('USD $');
@@ -29,13 +29,6 @@ export default function Networks({ navigation }) {
         await AsyncStorage.setItem('SelectedNetworks', JSON.stringify(item));
         setSelectedNetwork(item)
         setActiveNet(item)
-        navigation.navigate('MainPage')
-     
-        Toast.show({
-            type: ALERT_TYPE.INFO,
-            title: 'Switch Network',
-            textBody: `Network Switch to ${item?.networkName}`,
-          })
     }
     function renderItem({ item }) {
         // const {flag} = item;

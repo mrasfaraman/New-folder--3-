@@ -1,4 +1,4 @@
-import React, {useContext , useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   Image,
   ScrollView,
@@ -8,23 +8,24 @@ import {
   View,
   TextInput,
   FlatList,
-  Share
+  Share,
 } from 'react-native';
 import Coin from '../assets/images/asset_coin_icon.png';
 import Wallet from '../assets/images/wallet.png';
-import WalletDark from "../assets/images/wallet-dark.png"
+import WalletDark from '../assets/images/wallet-dark.png';
 import faceID from '../assets/images/face_id.png';
 import Print from '../assets/images/print.png';
 import Header from '../components/header';
 import BottomMenu from '../components/BottomMenu';
 import AddButton from '../components/AddButton';
 import {ThemeContext} from '../context/ThemeContext';
-import { SafeAreaView } from 'react-native';
+import {SafeAreaView} from 'react-native';
 import QRCodeGenerator from '../components/QRCodeGenerator/QRCodeGenerator';
-const Sell = ({route,navigation}) => {
+import SubmitBtn from '../components/SubmitBtn';
+const Sell = ({route, navigation}) => {
   const {theme} = useContext(ThemeContext);
-  
-  const shareAddress = async (evmAddress) => {
+
+  const shareAddress = async evmAddress => {
     try {
       await Share.share({
         message: `Here's my Wallet Address: ${evmAddress}`,
@@ -33,11 +34,11 @@ const Sell = ({route,navigation}) => {
       console.error('Error sharing EVM address:', error);
     }
   };
-  
+
   useEffect(() => {
     if (route?.params) {
-      console.log("Account >>>",route?.params?.account)
-      console.log("Network >>>",route?.params?.network)
+      console.log('Account >>>', route?.params?.account);
+      console.log('Network >>>', route?.params?.network);
       // console.log("Recepent Address >>>",route?.params?.recepentAddress)
     }
   }, [route?.params]);
@@ -45,10 +46,12 @@ const Sell = ({route,navigation}) => {
     <ScrollView
       style={[styles.MainWrapper, {backgroundColor: theme.screenBackgroud}]}>
       <Header title="Receive" onBack={() => navigation.goBack()} />
-      <SafeAreaView style={{marginTop:60}}>
-      <QRCodeGenerator evmAddress={route?.params?.account.replace(/^"|"$/g, '')} />
-    </SafeAreaView>
-      <View style={{marginBottom:50}}>
+      <SafeAreaView style={{marginTop: 60}}>
+        <QRCodeGenerator
+          evmAddress={route?.params?.account.replace(/^"|"$/g, '')}
+        />
+      </SafeAreaView>
+      <View style={{marginBottom: 50}}>
         <Text style={[styles.buyAmount, {color: theme.text}]}>Scan QR</Text>
       </View>
       {/* <View
@@ -84,13 +87,22 @@ const Sell = ({route,navigation}) => {
         </View>
       </View>
       <View style={styles.tokenImportBtnWrapper}>
-        <TouchableOpacity
+        <SubmitBtn
+          title="Share"
+          onPress={() =>
+            shareAddress(route?.params?.account.replace(/^"|"$/g, ''))
+          }
+          containerStyle={{marginHorizontal: 0}}
+        />
+        {/* <TouchableOpacity
           style={[styles.tokenImportButton, {borderColor: theme.buttonBorder}]}
-          onPress={() => shareAddress(route?.params?.account.replace(/^"|"$/g, ''))}>
+          onPress={() =>
+            shareAddress(route?.params?.account.replace(/^"|"$/g, ''))
+          }>
           <Text style={[styles.tokenImportButtonText, {color: theme.text}]}>
-          Share
+            Share
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );

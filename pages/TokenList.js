@@ -32,28 +32,16 @@ import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-a
 const TokenList = ({navigation}) => {
 
   const {theme} = useContext(ThemeContext);
-  const {Tokens , removeToken , selectedAccount , selectedNetwork} = useAuth();
+  const {Tokens , removeToken , selectedAccount} = useAuth();
   const [coins, setCoins] = useState([]);
   const [loader, setLoader] = useState(false)
   const [StateStorage, setStateStorage] = useState([])
   const data = Tokens;
-  
+
   // State to hold the value of the switch
   const [isEnabled, setIsEnabled] = useState(false);
   const [switchEnables, setSwitchEnables] = useState([]);
-  
-  const [activeNet, setActiveNet] = useState()
-  const getNetworkactive = async () => {
-    let data = await JSON.parse(selectedNetwork)
-    setActiveNet(data)
-  }
 
-  useEffect(() => {
-    getNetworkactive()
-  }, [selectedNetwork, setActiveNet])
-  useEffect(() => {
-    getNetworkactive()
-  }, [])
 
   const saveOrUpdateData = async (dataObject) => {
     try {
@@ -239,12 +227,8 @@ const TokenList = ({navigation}) => {
           />
         </View> */}
           <View style={{position:'fixed'}} >
-{activeNet?.type == 'solana' && (
-  <AddButton navigation={navigation} />
-)}
-{activeNet?.type == 'evm' && (
-  <AddButton navigation={navigation} />
-)}
+
+        <AddButton navigation={navigation} />
           </View>
 
         <View style={styles.bottomMenuMargin}>

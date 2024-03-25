@@ -17,7 +17,7 @@ import SubmitBtn from '../components/SubmitBtn';
 import Header from '../components/header';
 import {ThemeContext} from '../context/ThemeContext';
 import {useAuth} from '../context/AuthContext';
-import { enrollFingerprint } from '../utils/BiometricUtils';
+import {enrollFingerprint} from '../utils/BiometricUtils';
 export default function SetPasswordScreen({navigation}) {
   const [showPassword, setShowPassword] = useState(true);
   const [showConfirmPassword, setShowConfirmPassword] = useState(true);
@@ -30,34 +30,36 @@ export default function SetPasswordScreen({navigation}) {
   const {password, savePassword} = useAuth();
 
   async function handleSubmit() {
-    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/;
+    const strongPasswordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/;
 
     if (passwordInput == '') {
       return setError('Password cannot be empty!');
-    } 
+    }
 
     if (!toggleCheckBox) {
       return setError(
         'You need to agree to Terms & Conditions inorder to proceed.',
-        );
-    } 
-
-    if(!strongPasswordRegex.test(passwordInput)){
-      return setError("Password does not meet the requirements. \n\n" +
-      "Your password must be at least 8 characters long and include:\n" +
-      "- At least one uppercase letter (A-Z)\n" +
-      "- At least one lowercase letter (a-z)\n" +
-      "- At least one digit (0-9)\n" +
-      "- At least one special character (@, $, !, %, *, ?, & etc.)");
+      );
     }
 
-    if ( !passwordInput || passwordInput !== confirmPasswordInput ){
-        return setError('Password does not match!');
+    if (!strongPasswordRegex.test(passwordInput)) {
+      return setError(
+        'Password does not meet the requirements. \n\n' +
+          'Your password must be at least 8 characters long and include:\n' +
+          '- At least one uppercase letter (A-Z)\n' +
+          '- At least one lowercase letter (a-z)\n' +
+          '- At least one digit (0-9)\n' +
+          '- At least one special character (@, $, !, %, *, ?, & etc.)',
+      );
     }
-    
-      
-      await enrollFingerprint()
-      savePassword(passwordInput);
+
+    if (!passwordInput || passwordInput !== confirmPasswordInput) {
+      return setError('Password does not match!');
+    }
+
+    await enrollFingerprint();
+    savePassword(passwordInput);
     // return navigation.navigate('BiometricEnrollmentScreen');
     // return navigation.navigate('MainPage');
   }
@@ -78,10 +80,18 @@ export default function SetPasswordScreen({navigation}) {
         </Text>
         <Text
           style={[styles.textStyle, styles.instruction, {color: theme.text}]}>
-        Minimum 8 Characters
+          Minimum 8 Characters
         </Text>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput
@@ -97,7 +107,15 @@ export default function SetPasswordScreen({navigation}) {
           <Image source={theme.type == 'dark' ? eye : eyeDark} />
         </TouchableOpacity>
       </View>
-      <View style={[styles.input, {backgroundColor: theme.textInputBG}]}>
+      <View
+        style={[
+          styles.input,
+          {
+            // backgroundColor: theme.textInputBG,
+            borderColor: theme.addButtonBorder,
+            borderWidth: 1,
+          },
+        ]}>
         <View style={styles.inputLock}>
           <Image source={theme.type == 'dark' ? lock : lockDark} />
           <TextInput

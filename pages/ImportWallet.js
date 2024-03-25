@@ -18,7 +18,7 @@ import Header from '../components/header';
 import { ThemeContext } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import MaroonSpinner from '../components/Loader/MaroonSpinner';
-import { getEVM_AccountImport, getSol_AccountImport ,getBitcoin_AccountImport , getdoge_AccountImport, gettron_AccountImport} from '../utils/function';
+import { getEVM_AccountImport, getSol_AccountImport } from '../utils/function';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 export default function ImportWallet({ navigation }) {
@@ -67,48 +67,6 @@ export default function ImportWallet({ navigation }) {
         }
         return retval
     }
-    const validatebtc = async (data) => {
-        let retval = true
-        for (let i = 0; i < Accounts.length; i++) {
-            if (Accounts[i]?.btc?.privateKey == data) {
-                Toast.show({
-                    type: ALERT_TYPE.INFO,
-                    title: 'Already Exists',
-                    textBody: 'This account already exists.',
-                  })
-                retval = false
-            }
-        }
-        return retval
-    }
-    const validatetron = async (data) => {
-        let retval = true
-        for (let i = 0; i < Accounts.length; i++) {
-            if (Accounts[i]?.tron?.privateKey == data) {
-                Toast.show({
-                    type: ALERT_TYPE.INFO,
-                    title: 'Already Exists',
-                    textBody: 'This account already exists.',
-                  })
-                retval = false
-            }
-        }
-        return retval
-    }
-    const validatedoge = async (data) => {
-        let retval = true
-        for (let i = 0; i < Accounts.length; i++) {
-            if (Accounts[i]?.doge?.privateKey == data) {
-                Toast.show({
-                    type: ALERT_TYPE.INFO,
-                    title: 'Already Exists',
-                    textBody: 'This account already exists.',
-                  })
-                retval = false
-            }
-        }
-        return retval
-    }
     const validatesol = async (data) => {
         let retval = true
         for (let i = 0; i < Accounts.length; i++) {
@@ -145,10 +103,7 @@ export default function ImportWallet({ navigation }) {
             if (solImport.publicKey) {
                 const account_data = {
                     solana: solImport,
-                    evm: { address: "Account Not Available", privateKey: "----" },
-                    btc:{ address: "Account Not Available", privateKey: "----" },
-                    tron:{ address: "Account Not Available", privateKey: "----" },
-                    doge:{ address: "Account Not Available", privateKey: "----" },
+                    evm: { address: "Account Not Available", privateKey: "----" }
                 }
                let validated = await validatesol(passwordInput)
           
@@ -161,94 +116,7 @@ export default function ImportWallet({ navigation }) {
                     setLoader(false)
                 }
             }
-        }else if(activeNet?.type == 'btc'){
-            setLoader(true)
-            let btcImport = await getBitcoin_AccountImport(passwordInput)
-            if (!btcImport) {
-                setLoader(false)
-                Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: 'Invalid Key',
-                    textBody: 'Invalid Key 0x...',
-                  })
-            }
-            if (btcImport.address) {
-                const account_data = {
-                    solana: { publicKey: "Account Not Available", secretKey: "----" },
-                    evm : { address: "Account Not Available", privateKey: "----" },
-                    btc: btcImport,
-                    tron:{ address: "Account Not Available", privateKey: "----" },
-                    doge:{ address: "Account Not Available", privateKey: "----" },
-                }
-                let validated = await validatebtc(passwordInput)
-                if (validated) {
-                    setLoader(false)
-                    addAccount(account_data)
-                    setSelectedAccount(account_data)
-                    return navigation.navigate('MainPage');
-                }else{
-                    setLoader(false)
-                }
-            }
-        }else if(activeNet?.type == 'doge'){
-            setLoader(true)
-            let dogeImport = await getdoge_AccountImport(passwordInput)
-            if (!dogeImport) {
-                setLoader(false)
-                Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: 'Invalid Key',
-                    textBody: 'Invalid Key 0x...',
-                  })
-            }
-            if (dogeImport.address) {
-                const account_data = {
-                    solana: { publicKey: "Account Not Available", secretKey: "----" },
-                    evm : { address: "Account Not Available", privateKey: "----" },
-                    btc: { address: "Account Not Available", privateKey: "----" },
-                    tron:{ address: "Account Not Available", privateKey: "----" },
-                    doge:dogeImport,
-                }
-                let validated = await validatedoge(passwordInput)
-                if (validated) {
-                    setLoader(false)
-                    addAccount(account_data)
-                    setSelectedAccount(account_data)
-                    return navigation.navigate('MainPage');
-                }else{
-                    setLoader(false)
-                }
-            }
-        }else if(activeNet?.type == 'tron'){
-            setLoader(true)
-            let tronImport = await gettron_AccountImport(passwordInput)
-            if (!tronImport) {
-                setLoader(false)
-                Toast.show({
-                    type: ALERT_TYPE.WARNING,
-                    title: 'Invalid Key',
-                    textBody: 'Invalid Key 0x...',
-                  })
-            }
-            if (tronImport.address) {
-                const account_data = {
-                    solana: { publicKey: "Account Not Available", secretKey: "----" },
-                    evm : { address: "Account Not Available", privateKey: "----" },
-                    btc: { address: "Account Not Available", privateKey: "----" },
-                    tron:tronImport,
-                    doge:{ address: "Account Not Available", privateKey: "----" },
-                }
-                let validated = await validatetron(passwordInput)
-                if (validated) {
-                    setLoader(false)
-                    addAccount(account_data)
-                    setSelectedAccount(account_data)
-                    return navigation.navigate('MainPage');
-                }else{
-                    setLoader(false)
-                }
-            }
-        }else {
+        } else {
             setLoader(true)
             let evmImport = await getEVM_AccountImport(passwordInput)
             if (!evmImport) {
@@ -262,10 +130,7 @@ export default function ImportWallet({ navigation }) {
             if (evmImport.address) {
                 const account_data = {
                     solana: { publicKey: "Account Not Available", secretKey: "----" },
-                    evm: evmImport,
-                    btc:{ address: "Account Not Available", privateKey: "----" },
-                    tron:{ address: "Account Not Available", privateKey: "----" },
-                    doge:{ address: "Account Not Available", privateKey: "----" },
+                    evm: evmImport
                 }
                 let validated = await validate(passwordInput)
                 if (validated) {
@@ -324,18 +189,11 @@ export default function ImportWallet({ navigation }) {
             {loader ?
             <MaroonSpinner/> 
             :
-            <>
             <SubmitBtn
                 title="Import Wallet"
                 // onPress={() => navigation.navigate('ResetPasswordScreen')}
                 onPress={() => handleSubmit()}
-                />
-                <TouchableOpacity onPress={()=>{ navigation.navigate('ImportWalletMnemonic') }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', margin:10 }}>
-                    <Text style={{ color: theme.text }}> Import Using Mnemonic </Text>
-                </View>
-                </TouchableOpacity>
-            </>
+            />
             }
         </ScrollView>
     );

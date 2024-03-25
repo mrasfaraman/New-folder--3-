@@ -17,14 +17,13 @@ import SubmitBtn from '../components/SubmitBtn';
 import Header from '../components/header';
 import { ThemeContext } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { CreateWallet, CreateEVMWallet , CreateBitcoinAccount , CreatedogeAccount, CreatetronAccount,} from '../utils/function';
+import { CreateWallet, CreateEVMWallet } from '../utils/function';
 
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
-import MaroonSpinner from '../components/Loader/MaroonSpinner';
+
 export default function CreateAccount({ navigation }) {
     const [showPassword, setShowPassword] = useState(true);
-    const [loader, setLoader] = useState(false);
     const [passwordInput, setPasswordInput] = useState('');
     const [error, setError] = useState('');
 
@@ -32,19 +31,12 @@ export default function CreateAccount({ navigation }) {
     const {addAccount,setSelectedAccount} = useAuth();
 
     async function handleSubmit() {
-    setLoader(true)
     try{
     let data = await CreateWallet()
     let EVMdata = await CreateEVMWallet()
-    let Bitcoin_data = await CreateBitcoinAccount()
-    let tron_data = await CreatetronAccount()
-    let dogecoin_data = await CreatedogeAccount()
     const account_data = {
         solana : data,
-        evm : EVMdata,
-        btc : Bitcoin_data,
-        tron : tron_data,
-        doge : dogecoin_data
+        evm : EVMdata
     }
     addAccount(account_data)
     Toast.show({
@@ -52,11 +44,9 @@ export default function CreateAccount({ navigation }) {
         title: 'Account Created',
         textBody: 'Your Account Sucessfully Created',
       })
-    // await setSelectedAccount(account_data)
-    setLoader(false)
+    setSelectedAccount(account_data)
     return navigation.navigate('MainPage');
     }catch(error){
-        setLoader(false)
         Toast.show({
             type: ALERT_TYPE.INFO,
             title: 'Error',
@@ -87,12 +77,10 @@ export default function CreateAccount({ navigation }) {
                     </Text>
                 )}
             </View>
-            {loader ? <MaroonSpinner /> :
             <SubmitBtn
-            title="Create "
-            onPress={() => handleSubmit()}
+                title="Create "
+                onPress={() => handleSubmit()}
             />
-             }
         </ScrollView>
     );
 }

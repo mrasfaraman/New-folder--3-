@@ -17,6 +17,7 @@ import SwapingIcon from '../assets/images/swaping_icon.png';
 import SwapingIconDark from '../assets/images/swaping_icon_dark.png';
 import ChooseChannel from '../components/ChooseChannel';
 import {ThemeContext} from '../context/ThemeContext';
+import SubmitBtn from '../components/SubmitBtn';
 
 const Bridging = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
@@ -72,14 +73,24 @@ const Bridging = ({navigation}) => {
               placeholder="0.000"
               placeholderTextColor={theme.text}
             />
-            <TouchableOpacity style={[styles.swapMaxBtnWrapper, {borderColor: theme.buttonBorder}]}>
-              <Text style={[styles.swapMaxBtnText, {color: theme.text}]}>max</Text>
+            <TouchableOpacity
+              style={[
+                styles.swapMaxBtnWrapper,
+                {borderColor: theme.buttonBorder},
+              ]}>
+              <Text style={[styles.swapMaxBtnText, {color: theme.text}]}>
+                max
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.balanceWrapperFlex}>
-          <Text style={[styles.swapBalanceLabel, {color: theme.text}]}>balance</Text>
-          <Text style={[styles.swapBalance, {color: theme.emphasis}]}>1.50129603 KDA</Text>
+          <Text style={[styles.swapBalanceLabel, {color: theme.text}]}>
+            balance
+          </Text>
+          <Text style={[styles.swapBalance, {color: theme.emphasis}]}>
+            1.50129603 KDA
+          </Text>
         </View>
       </View>
     );
@@ -92,8 +103,11 @@ const Bridging = ({navigation}) => {
       <View style={styles.swapWrapper}>
         <SwapCard />
         <View style={styles.swapBtnFlexWrapper}>
-          <TouchableOpacity style={[styles.swapBtn, {backgroundColor: theme.rightArrowBG}]}>
-            <Image source={theme.type == 'dark' ? SwapingIcon : SwapingIconDark} />
+          <TouchableOpacity
+            style={[styles.swapBtn, {backgroundColor: theme.rightArrowBG}]}>
+            <Image
+              source={theme.type == 'dark' ? SwapingIcon : SwapingIconDark}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -104,9 +118,17 @@ const Bridging = ({navigation}) => {
       </View>
       <ChooseChannel />
       <View style={styles.tokenImportBtnWrapper}>
-        <TouchableOpacity style={[styles.tokenImportButton, {borderColor: theme.buttonBorder}]}>
-          <Text style={[styles.tokenImportButtonText, {color: theme.text}]}>Save Changes</Text>
-        </TouchableOpacity>
+        <SubmitBtn
+          title="Save Changes"
+          // onPress={() => {}}
+          containerStyle={{marginHorizontal: 0}}
+        />
+        {/* <TouchableOpacity
+          style={[styles.tokenImportButton, {borderColor: theme.buttonBorder}]}>
+          <Text style={[styles.tokenImportButtonText, {color: theme.text}]}>
+            Save Changes
+          </Text>
+        </TouchableOpacity> */}
       </View>
     </ScrollView>
   );

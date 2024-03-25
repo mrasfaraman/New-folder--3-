@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -12,33 +12,33 @@ import {
 import Header from '../components/header';
 import Token from '../components/AddToken/Token';
 import NetWork from '../components/AddToken/Network';
-import { ThemeContext } from '../context/ThemeContext';
+import {ThemeContext} from '../context/ThemeContext';
 
-const AddToken = ({ navigation }) => {
+const AddToken = ({navigation}) => {
   const [currentTab, setCurrenTab] = useState('token');
-  const { theme } = useContext(ThemeContext);
+  const {theme} = useContext(ThemeContext);
   return (
     <ScrollView
-      style={[styles.mainWrapper, { backgroundColor: theme.screenBackgroud }]}>
+      style={[styles.mainWrapper, {backgroundColor: theme.screenBackgroud}]}>
       <Header onBack={() => navigation.goBack()} title="Add Token & Network" />
       <View style={styles.AddGeaderWrapper}>
         <TouchableOpacity
           onPress={() => setCurrenTab('token')}
           style={[
             styles.addTabs,
-            { borderBottomColor: theme.emphasis },
-            currentTab == 'token' && { borderBottomWidth: 2 },
+            {borderBottomColor: theme.emphasis},
+            currentTab == 'token' && {borderBottomWidth: 2},
           ]}>
-          <Text style={[styles.addTabsText, { color: theme.text }]}>Token</Text>
+          <Text style={[styles.addTabsText, {color: theme.text}]}>Token</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setCurrenTab('network')}
           style={[
             styles.addTabs,
-            { borderBottomColor: theme.emphasis },
-            currentTab == 'network' && { borderBottomWidth: 2 },
+            {borderBottomColor: theme.emphasis},
+            currentTab == 'network' && {borderBottomWidth: 2},
           ]}>
-          <Text style={[styles.addTabsText, { color: theme.text }]}>Network</Text>
+          <Text style={[styles.addTabsText, {color: theme.text}]}>Network</Text>
         </TouchableOpacity>
       </View>
       {currentTab == 'token' && <Token navigation={navigation} />}

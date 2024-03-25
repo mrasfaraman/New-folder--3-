@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   FlatList,
   Image,
@@ -13,31 +13,28 @@ import AssetGridColumnDark from '../../assets/images/asset-layout-grid-dark.png'
 import AssetCoinIcon from '../../assets/images/asset_coin_icon.png';
 import AssetGraph from '../../assets/images/asset_graph.png';
 import AssetLasticon from '../../assets/images/asset_last_icon.png';
-import { ThemeContext } from '../../context/ThemeContext';
+import {ThemeContext} from '../../context/ThemeContext';
 import MaroonSpinner from '../Loader/MaroonSpinner';
-import { fetchCoins } from '../../utils/function';
+import {fetchCoins} from '../../utils/function';
 import Sparkline from '../Sparkline ';
-import { useAuth } from '../../context/AuthContext';
-import { LineChart } from 'react-native-svg-charts';
+import {useAuth} from '../../context/AuthContext';
+import {LineChart} from 'react-native-svg-charts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const LiveToken = ({ navigation, address }) => {
-
+const LiveToken = ({navigation, address}) => {
   const [coins, setCoins] = useState([]);
-
 
   const [switchEnables, setSwitchEnables] = useState([]);
 
   const getSwitchData = async () => {
     const existingDataJson = await AsyncStorage.getItem('switchs');
     let existingData = existingDataJson ? JSON.parse(existingDataJson) : [];
-    setSwitchEnables(existingData)
-    }
+    setSwitchEnables(existingData);
+  };
 
-    
-    useEffect(() => {
-      const intervalId = setInterval(getSwitchData, 5000);
-      return () => clearInterval(intervalId);
-    }, []);
+  useEffect(() => {
+    const intervalId = setInterval(getSwitchData, 5000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     const getCoinsData = async () => {
@@ -48,112 +45,116 @@ const LiveToken = ({ navigation, address }) => {
   }, []);
 
   const [isGrid, setIsGrid] = useState(false);
-  const { theme } = useContext(ThemeContext);
-  const { selectedAccount } = useAuth()
+  const {theme} = useContext(ThemeContext);
+  const {selectedAccount} = useAuth();
 
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
 
   // ///////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
-    setLoader(true)
-      const timer = setTimeout(() => {
-      setLoader(false)
+    setLoader(true);
+    const timer = setTimeout(() => {
+      setLoader(false);
     }, 4000);
     return () => clearTimeout(timer);
   }, [selectedAccount]);
   // ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   // Box Grid
-  const RenderCard = ({ item , index}) => {
-    let enabled = switchEnables.find(i => i.index === index)?.switch ;
-    if(enabled == undefined){
-  
-    }else if(!enabled){
-       return;
-     }
+  const RenderCard = ({item, index}) => {
+    let enabled = switchEnables.find(i => i.index === index)?.switch;
+    if (enabled == undefined) {
+    } else if (!enabled) {
+      return;
+    }
     return (
-    <View
-    style={[
-      styles.renderCardWrapper,
-      { backgroundColor: theme.menuItemBG },
-      theme.type != 'dark'
-        ? { borderWidth: 1, borderColor: theme.buttonBorder }
-        : {},
-    ]}>
-    <View style={styles.coinDetailWrapper}>
-      <View>
-        <Image style={styles.pancakeLeftImage} source={{ uri: item?.image }} />
-      </View>
-      <View>
-        <Text style={[styles.assetCoinSymbol, { color: theme.text }]}>
-        {item?.name?.substring(0,12)}
-        </Text>
-        
-      <Text style={[styles.assetCoinName, {color: theme.amountGreen}]}>
-            24h: {item?.price_change_percentage_24h}%
-        </Text>
-      </View>
-    </View>
-    <View style={styles.graphWrapper}>
-      {/* <Image source={AssetGraph} /> */}
-      <LineChart
-        style={{ height: 50, width: 150 }}
-        data={item?.sparkline_in_7d?.price}
-        svg={{ stroke: 'green', strokeWidth: 2 }}
-        contentInset={{ top:0, bottom: 0 }}
-      />
-      {/* <Text style={[styles.assetCoinName, { color: theme.text }]}>
+      <View
+        style={[
+          styles.renderCardWrapper,
+          {backgroundColor: theme.menuItemBG},
+          theme.type != 'dark'
+            ? {borderWidth: 1, borderColor: theme.buttonBorder}
+            : {},
+        ]}>
+        <View style={styles.coinDetailWrapper}>
+          <View>
+            <Image
+              style={styles.pancakeLeftImage}
+              source={{uri: item?.image}}
+            />
+          </View>
+          <View>
+            <Text style={[styles.assetCoinSymbol, {color: theme.text}]}>
+              {item?.name?.substring(0, 12)}
+            </Text>
+
+            <Text style={[styles.assetCoinName, {color: theme.amountGreen}]}>
+              24h: {item?.price_change_percentage_24h}%
+            </Text>
+          </View>
+        </View>
+        <View style={styles.graphWrapper}>
+          {/* <Image source={AssetGraph} /> */}
+          <LineChart
+            style={{height: 50, width: 150}}
+            data={item?.sparkline_in_7d?.price}
+            svg={{stroke: 'green', strokeWidth: 2}}
+            contentInset={{top: 0, bottom: 0}}
+          />
+          {/* <Text style={[styles.assetCoinName, { color: theme.text }]}>
           {item?.symbol.toUpperCase()}
         </Text> */}
-    </View>
-    <View style={styles.assetCardLastWrapper}>
-      <View>
-        <Text style={[styles.assetLastPrice, { color: theme.text }]}>
-        {item?.symbol?.toUpperCase()}  ${item?.current_price} 
-        </Text>
-        <Text style={[styles.assetLastStoke, { color: theme.text }]}>
-        {item?.last_updated}
-        </Text>
-      </View>
-      <View>
-        <View style={styles.assetLastRightImgWrapperFlex}>
-          <Image  source={{ uri: item?.image }} />
-          {/* <Text style={[styles.assetLastSymbol, { color: theme.text }]}>
+        </View>
+        <View style={styles.assetCardLastWrapper}>
+          <View>
+            <Text style={[styles.assetLastPrice, {color: theme.text}]}>
+              {item?.symbol?.toUpperCase()} ${item?.current_price}
+            </Text>
+            <Text style={[styles.assetLastStoke, {color: theme.text}]}>
+              {item?.last_updated}
+            </Text>
+          </View>
+          <View>
+            <View style={styles.assetLastRightImgWrapperFlex}>
+              <Image source={{uri: item?.image}} />
+              {/* <Text style={[styles.assetLastSymbol, { color: theme.text }]}>
             {item?.last_updated}
           </Text> */}
+            </View>
+          </View>
         </View>
       </View>
-    </View>
-  </View>
     );
   };
   // Box Row
-  const RenderCardGrid = ({ item , index }) => {
-    let enabled = switchEnables.find(i => i.index === index)?.switch ;
-   if(enabled == undefined){
- 
-   }else if(!enabled){
+  const RenderCardGrid = ({item, index}) => {
+    let enabled = switchEnables.find(i => i.index === index)?.switch;
+    if (enabled == undefined) {
+    } else if (!enabled) {
       return;
     }
     return (
       <View
         style={[
           styles.renderCardWrapperGrid,
-          { backgroundColor: theme.menuItemBG, marginBottom: 10 },
+          {backgroundColor: theme.menuItemBG, marginBottom: 10},
           theme.type != 'dark'
-            ? { borderWidth: 1, borderColor: theme.buttonBorder }
+            ? {borderWidth: 1, borderColor: theme.buttonBorder}
             : {},
         ]}>
         <View style={styles.coinDetailWrapper}>
           <View>
-            <Image style={styles.pancakeLeftImage} source={{ uri: item?.image }} />
+            <Image
+              style={styles.pancakeLeftImage}
+              source={{uri: item?.image}}
+            />
           </View>
           <View>
-            <Text style={[styles.assetCoinSymbol, { color: theme.text }]}>
+            <Text style={[styles.assetCoinSymbol, {color: theme.text}]}>
               {item?.name}
             </Text>
             <Text style={[styles.assetCoinName, {color: theme.amountGreen}]}>
-            24h: {item?.price_change_percentage_24h}%
+              24h: {item?.price_change_percentage_24h}%
             </Text>
           </View>
         </View>
@@ -163,8 +164,8 @@ const LiveToken = ({ navigation, address }) => {
         </View>
         <View style={styles.assetCardLastWrapper}>
           <View>
-            <Text style={[styles.assetLastPrice, { color: theme.text }]}>
-            ${item?.current_price}
+            <Text style={[styles.assetLastPrice, {color: theme.text}]}>
+              ${item?.current_price}
             </Text>
             {/* <Text style={[styles.assetLastStoke, { color: theme.text }]}>
               {item.market_cap}
@@ -185,10 +186,12 @@ const LiveToken = ({ navigation, address }) => {
 
   return (
     <View style={styles.assetMainWrapper}>
-      {address?.length === 23 ? "" :
+      {address?.length === 23 ? (
+        ''
+      ) : (
         <>
           <View style={styles.assetHeader}>
-            <Text style={[styles.assetHeaderText, { color: theme.text }]}>
+            <Text style={[styles.assetHeaderText, {color: theme.text}]}>
               Hot 🔥
             </Text>
             {isGrid && (
@@ -201,9 +204,9 @@ const LiveToken = ({ navigation, address }) => {
                   },
                 ]}>
                 <TouchableOpacity
-                  style={{ paddingHorizontal: 70, paddingVertical: 3 }}
+                  style={{paddingHorizontal: 70, paddingVertical: 3}}
                   onPress={() => navigation.navigate('TokenList')}>
-                  <Text style={[styles.assetAddBtnText, { color: theme.text }]}>
+                  <Text style={[styles.assetAddBtnText, {color: theme.text}]}>
                     +
                   </Text>
                 </TouchableOpacity>
@@ -223,32 +226,47 @@ const LiveToken = ({ navigation, address }) => {
                 style={[
                   styles.assetAddBtn,
                   {
-                    borderColor: theme.buttonBorder,
-                    backgroundColor: theme.menuItemBG,
+                    borderColor: theme.addButtonBorder,
+                    backgroundColor: theme.addButtonBG,
                   },
                 ]}>
                 <TouchableOpacity
-                  style={{ padding: 11.47 }}
+                  style={{padding: 11.47}}
                   onPress={() => navigation.navigate('TokenList')}>
-                  <Text style={[styles.assetAddBtnText, { color: theme.text }]}>
+                  <Text
+                    style={[
+                      styles.assetAddBtnText,
+                      {
+                        color:
+                          theme.name == 'theme3'
+                            ? theme.screenBackgroud
+                            : theme.text,
+                      },
+                    ]}>
                     +
                   </Text>
                 </TouchableOpacity>
               </View>
             )}
-            {
-              loader ? <MaroonSpinner /> : <FlatList
-              data={coins}
-              keyExtractor={(item) => item.id}
-                renderItem={({ item , index }) =>
-                  isGrid ? <RenderCardGrid item={item} index={index}/> : <RenderCard item={item} index={index} />
+            {loader ? (
+              <MaroonSpinner />
+            ) : (
+              <FlatList
+                data={coins}
+                keyExtractor={item => item.id}
+                renderItem={({item, index}) =>
+                  isGrid ? (
+                    <RenderCardGrid item={item} index={index} />
+                  ) : (
+                    <RenderCard item={item} index={index} />
+                  )
                 }
                 horizontal={!isGrid}
               />
-            }
+            )}
           </View>
         </>
-      }
+      )}
     </View>
   );
 };
